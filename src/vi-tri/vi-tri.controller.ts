@@ -13,8 +13,9 @@ import { ViTriService } from './vi-tri.service';
 import { ViTriDto } from './dto/vi-tri.dto';
 import { ApiTags, ApiConsumes, ApiBody, ApiParam } from '@nestjs/swagger';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { diskStorage, Multer } from 'multer';
+import { diskStorage } from 'multer';
 import { extname } from 'path';
+import { Express } from 'express';
 
 // Cấu hình lưu trữ cho Multer
 const storage = diskStorage({
@@ -83,7 +84,7 @@ export class ViTriController {
   @UseInterceptors(FileInterceptor('formFile', { storage }))
   async uploadImage(
     @Param('ma_vi_tri') ma_vi_tri: number,
-    @UploadedFile() file: Multer.File,
+    @UploadedFile() file: Express.Multer.File,
   ) {
     return this.viTriService.uploadImage(ma_vi_tri, file);
   }

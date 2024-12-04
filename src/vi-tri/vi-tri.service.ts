@@ -5,7 +5,7 @@ import * as path from 'path';
 import * as fs from 'fs';
 import * as util from 'util';
 import { join } from 'path';
-import { Multer } from 'multer';
+import { Express } from 'express';
 
 const renameAsync = util.promisify(fs.rename);
 
@@ -57,7 +57,7 @@ export class ViTriService {
   }
 
   // Upload hình ảnh cho vị trí
-  async uploadImage(id: number, file: Multer.File): Promise<ViTri> {
+  async uploadImage(id: number, file: Express.Multer.File): Promise<ViTri> {
     // Kiểm tra xem file có hợp lệ không
     if (!file) {
       throw new Error('No file uploaded');

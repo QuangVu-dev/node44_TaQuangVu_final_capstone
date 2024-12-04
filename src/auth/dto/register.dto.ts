@@ -5,6 +5,7 @@ import {
   IsOptional,
   IsDateString,
   IsNumber,
+  IsBoolean,
 } from 'class-validator';
 
 export class RegisterDto {
@@ -35,8 +36,8 @@ export class RegisterDto {
   birth_day: string;
 
   @ApiProperty({ description: 'Gender of the user' })
-  @IsString()
-  gender: string;
+  @IsBoolean()
+  gender: boolean;
 
   @ApiProperty({ description: 'Role of the user' })
   @IsString()

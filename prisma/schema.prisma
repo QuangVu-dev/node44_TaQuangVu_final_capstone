@@ -26,15 +26,15 @@ model DatPhong {
 }
 
 model NguoiDung {
-  id            Int       @id @default(autoincrement())
-  name          String?   @db.VarChar(255)
-  email         String?   @db.VarChar(255)
-  pass_word     String?   @db.VarChar(255)
-  phone         String?   @db.VarChar(255)
-  birth_day     DateTime? @db.Date
-  gender        String?   @db.VarChar(255)
-  role          String?   @db.VarChar(255)
-  refresh_token String?   @db.VarChar(255)
+  id        Int       @id @default(autoincrement())
+  name      String?   @db.VarChar(255)
+  email     String?   @db.VarChar(255)
+  pass_word String?   @db.VarChar(255)
+  phone     String?   @db.VarChar(255)
+  birth_day DateTime? @db.Date
+  gender    Boolean?
+  role      String?   @db.VarChar(255)
+  avatar    String?   @db.VarChar(255)
 }
 
 model Phong {

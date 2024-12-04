@@ -14,9 +14,21 @@ import { DatPhongModule } from './dat-phong/dat-phong.module';
 import { DatPhongService } from './dat-phong/dat-phong.service';
 import { ViTriService } from './vi-tri/vi-tri.service';
 import { ViTriModule } from './vi-tri/vi-tri.module';
+import { NguoiDungModule } from './nguoi-dung/nguoi-dung.module';
+import { NguoiDungService } from './nguoi-dung/nguoi-dung.service';
+import { PhongModule } from './phong/phong.module';
+import { PhongService } from './phong/phong.service';
 
 @Module({
-  imports: [AppModule, AuthModule, BinhLuanModule, DatPhongModule, ViTriModule],
+  imports: [
+    AppModule,
+    AuthModule,
+    BinhLuanModule,
+    DatPhongModule,
+    ViTriModule,
+    NguoiDungModule,
+    PhongModule,
+  ],
   controllers: [
     AppController,
     AuthController,
@@ -26,6 +38,13 @@ import { ViTriModule } from './vi-tri/vi-tri.module';
     DatPhongController,
     BinhLuanController,
   ],
-  providers: [AppService, BinhLuanService, DatPhongService, ViTriService],
+  providers: [
+    AppService,
+    BinhLuanService,
+    DatPhongService,
+    ViTriService,
+    NguoiDungService,
+    PhongService,
+  ],
 })
 export class AppModule {}

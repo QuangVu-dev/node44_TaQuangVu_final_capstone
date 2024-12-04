@@ -21,7 +21,7 @@ export class AuthService {
     pass_word: string,
     phone: string,
     birth_day: string,
-    gender: string,
+    gender: boolean,
     role: string,
   ) {
     const userExist = await this.prisma.nguoiDung.findFirst({
