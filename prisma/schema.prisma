@@ -1,0 +1,67 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model BinhLuan {
+  id                 Int       @id
+  ma_phong           Int?
+  ma_nguoi_binh_luan Int?
+  ngay_binh_luan     DateTime? @db.Date
+  noi_dung           String?   @db.VarChar(255)
+  sao_binh_luan      Int?
+}
+
+model DatPhong {
+  id             Int       @id
+  ma_phong       Int?
+  ngay_den       DateTime? @db.Date
+  ngay_di        DateTime? @db.Date
+  so_luong_khach Int?
+  ma_nguoi_dat   Int?
+}
+
+model NguoiDung {
+  id            Int       @id @default(autoincrement())
+  name          String?   @db.VarChar(255)
+  email         String?   @db.VarChar(255)
+  pass_word     String?   @db.VarChar(255)
+  phone         String?   @db.VarChar(255)
+  birth_day     DateTime? @db.Date
+  gender        String?   @db.VarChar(255)
+  role          String?   @db.VarChar(255)
+  refresh_token String?   @db.VarChar(255)
+}
+
+model Phong {
+  id        Int      @id
+  ten_phong String?  @db.VarChar(255)
+  khach     Int?
+  phong_ngu Int?
+  giuong    Int?
+  phong_tam Int?
+  mo_ta     String?  @db.VarChar(255)
+  gia_tien  Int?
+  may_giat  Boolean?
+  ban_la    Boolean?
+  tivi      Boolean?
+  dieu_hoa  Boolean?
+  wifi      Boolean?
+  bep       Boolean?
+  do_xe     Boolean?
+  ho_boi    Boolean?
+  ban_ui    Boolean?
+  hinh_anh  String?  @db.VarChar(255)
+}
+
+model ViTri {
+  id         Int     @id
+  ten_vi_tri String? @db.VarChar(255)
+  tinh_thanh String? @db.VarChar(255)
+  quoc_gia   String? @db.VarChar(255)
+  hinh_anh   String? @db.VarChar(255)
+}
