@@ -1,6 +1,4 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { AuthController } from './auth/auth.controller';
 import { NguoiDungController } from './nguoi-dung/nguoi-dung.controller';
 import { ViTriController } from './vi-tri/vi-tri.controller';
@@ -21,7 +19,6 @@ import { PhongService } from './phong/phong.service';
 
 @Module({
   imports: [
-    AppModule,
     AuthModule,
     BinhLuanModule,
     DatPhongModule,
@@ -30,7 +27,6 @@ import { PhongService } from './phong/phong.service';
     PhongModule,
   ],
   controllers: [
-    AppController,
     AuthController,
     NguoiDungController,
     ViTriController,
@@ -39,7 +35,6 @@ import { PhongService } from './phong/phong.service';
     BinhLuanController,
   ],
   providers: [
-    AppService,
     BinhLuanService,
     DatPhongService,
     ViTriService,
