@@ -8,6 +8,7 @@ import {
   Delete,
   UploadedFile,
   UseInterceptors,
+  BadRequestException,
 } from '@nestjs/common';
 import { NguoiDungService } from './nguoi-dung.service';
 import { NguoiDungDto } from './dto/nguoi-dung.dto';
@@ -62,11 +63,11 @@ export class NguoiDungController {
   }
 
   // Phương thức POST: Upload ảnh người dùng
-  @Post('upload-avatar')
+  @Post('upload-avatar/:id') // Bao gồm id trong route
   @UseInterceptors(
     FileInterceptor('file', {
       storage: diskStorage({
-        destination: './uploads/avatars', // Đường dẫn lưu trữ file
+        destination: './public/uploads/avatars',
         filename: (req, file, callback) => {
           const uniqueSuffix = Date.now() + extname(file.originalname);
           callback(null, `${file.fieldname}-${uniqueSuffix}`);
@@ -74,27 +75,30 @@ export class NguoiDungController {
       }),
     }),
   )
-  @ApiConsumes('multipart/form-data') // Định nghĩa kiểu dữ liệu là multipart/form-data
+  @ApiConsumes('multipart/form-data')
   @ApiBody({
     description: 'Upload avatar for the user',
     schema: {
       type: 'object',
       properties: {
-        file: {
-          type: 'string',
-          format: 'binary', // Định dạng file binary cho Swagger
-        },
+        file: { type: 'string', format: 'binary' },
       },
     },
   })
-  @ApiParam({
-    name: 'id',
-    type: 'number',
-  })
+  @ApiParam({ name: 'id', type: 'number' })
   async uploadAvatar(
-    @Param('id') id: number,
+    @Param('id') id: string, // Nhận id là string từ URL
     @UploadedFile() file: Express.Multer.File,
   ) {
-    return this.nguoiDungService.uploadAvatar(id, file);
+    if (!file) {
+      throw new BadRequestException('File is required');
+    }
+
+    const numericId = parseInt(id, 10);
+    if (isNaN(numericId)) {
+      throw new BadRequestException('Invalid ID');
+    }
+
+    return this.nguoiDungService.uploadAvatar(numericId, file);
   }
 }

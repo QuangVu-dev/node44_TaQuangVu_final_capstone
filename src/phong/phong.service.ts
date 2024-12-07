@@ -1,6 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { CreatePhongDto } from './dto/phong.dto';
-import { PrismaClient } from '@prisma/client';
+import { Phong, PrismaClient } from '@prisma/client';
+import { join } from 'path';
+import * as path from 'path';
+import * as util from 'util';
+import * as fs from 'fs';
+
+const renameAsync = util.promisify(fs.rename);
 
 @Injectable()
 export class PhongService {
@@ -68,5 +74,36 @@ export class PhongService {
     return this.prisma.phong.delete({
       where: { id: Number(id) },
     });
+  }
+
+  // Upload hình ảnh cho phong
+  async uploadImage(id: any, file: Express.Multer.File): Promise<Phong> {
+    const parsedId = parseInt(id, 10); // Ép kiểu id thành number
+    if (isNaN(parsedId)) {
+      throw new Error('Invalid id');
+    }
+
+    // Kiểm tra file
+    if (!file) {
+      throw new Error('No file uploaded');
+    }
+
+    const fileExtension = path.extname(file.originalname);
+    const fileName = `${parsedId}-${Date.now()}${fileExtension}`;
+
+    // Kiểm tra tên file
+    console.log('File Name:', fileName);
+
+    // Lưu trữ file vào thư mục public/uploads
+    const filePath = join(__dirname, '../../public/uploads', fileName);
+    await renameAsync(file.path, filePath);
+
+    // Cập nhật đường dẫn hình ảnh vào cơ sở dữ liệu
+    const updatedPhong = await this.prisma.phong.update({
+      where: { id: parsedId }, // Sử dụng parsedId để cập nhật
+      data: { hinh_anh: filePath },
+    });
+
+    return updatedPhong;
   }
 }

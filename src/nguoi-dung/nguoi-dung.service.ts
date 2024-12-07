@@ -59,22 +59,28 @@ export class NguoiDungService {
 
   // Phương thức tìm kiếm người dùng theo tên
   async searchByName(tenNguoiDung: string) {
-    return this.prisma.nguoiDung.findMany({
+    const results = await this.prisma.nguoiDung.findMany({
       where: {
         name: {
-          contains: tenNguoiDung, // Tìm kiếm theo tên, có thể tìm theo phần tên
+          contains: tenNguoiDung.toLowerCase(),
         },
       },
     });
+
+    if (results.length === 0) {
+      throw new Error('No users found with the given name.');
+    }
+
+    return results;
   }
 
   // Phương thức upload ảnh người dùng
   async uploadAvatar(id: number, file: Express.Multer.File) {
-    const avatarPath = `/uploads/avatars/${file.filename}`; // Lưu trữ ảnh vào thư mục này
+    const avatarPath = `./public/uploads/avatars/${file.filename}`; // Lưu trữ ảnh vào thư mục này
 
     // Cập nhật ảnh đại diện của người dùng
     return this.prisma.nguoiDung.update({
-      where: { id: Number(id) },
+      where: { id: id },
       data: {
         avatar: avatarPath, // Cập nhật trường avatar trong cơ sở dữ liệu
       },

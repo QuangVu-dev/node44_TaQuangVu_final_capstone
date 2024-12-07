@@ -33,7 +33,7 @@ export class ViTriService {
         ten_vi_tri: ViTriDto.ten_vi_tri,
         tinh_thanh: ViTriDto.tinh_thanh,
         quoc_gia: ViTriDto.quoc_gia,
-        hinh_anh: ViTriDto.hinh_anh || '', // Nếu không có hình ảnh, truyền giá trị mặc định
+        hinh_anh: ViTriDto.hinh_anh || '', // Giá trị mặc định nếu không có hình ảnh
       },
     });
   }
@@ -44,7 +44,7 @@ export class ViTriService {
       where: { id: Number(id) },
       data: {
         ...updateViTriDto,
-        quoc_gia: updateViTriDto.quoc_gia, // Sử dụng toán tử spread để truyền dữ liệu
+        quoc_gia: updateViTriDto.quoc_gia,
       },
     });
   }
@@ -64,22 +64,30 @@ export class ViTriService {
 
   // Upload hình ảnh cho vị trí
   async uploadImage(id: number, file: Express.Multer.File): Promise<ViTri> {
-    // Kiểm tra xem file có hợp lệ không
+    // Kiểm tra file
     if (!file) {
       throw new Error('No file uploaded');
+    }
+
+    // Kiểm tra ID
+    if (isNaN(id)) {
+      throw new Error('Invalid id');
     }
 
     const fileExtension = path.extname(file.originalname);
     const fileName = `${id}-${Date.now()}${fileExtension}`;
 
-    // Lưu trữ file vào thư mục public/uploads (bạn có thể thay đổi đường dẫn theo ý muốn)
+    // Kiểm tra tên file
+    console.log('File Name:', fileName);
+
+    // Lưu trữ file vào thư mục public/uploads
     const filePath = join(__dirname, '../../public/uploads', fileName);
-    await renameAsync(file.path, filePath); // Di chuyển file từ thư mục temp đến đích
+    await renameAsync(file.path, filePath); // Di chuyển file từ temp đến đích
 
     // Cập nhật đường dẫn hình ảnh vào cơ sở dữ liệu
     const updatedViTri = await this.prisma.viTri.update({
       where: { id: Number(id) },
-      data: { hinh_anh: filePath },
+      data: { hinh_anh: fileName }, // Lưu tên file (hoặc đường dẫn tùy ý)
     });
 
     return updatedViTri;
