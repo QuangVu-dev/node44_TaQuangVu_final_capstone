@@ -35,7 +35,7 @@ export class NguoiDungService {
   // Lấy người dùng theo ID
   async findById(id: number): Promise<NguoiDung | null> {
     return this.prisma.nguoiDung.findUnique({
-      where: { id },
+      where: { id: Number(id) },
     });
   }
 
@@ -45,7 +45,7 @@ export class NguoiDungService {
     updateNguoiDungDto: NguoiDungDto,
   ): Promise<NguoiDung> {
     return this.prisma.nguoiDung.update({
-      where: { id },
+      where: { id: Number(id) },
       data: updateNguoiDungDto,
     });
   }
@@ -53,7 +53,7 @@ export class NguoiDungService {
   // Xóa người dùng
   async remove(id: number): Promise<NguoiDung> {
     return this.prisma.nguoiDung.delete({
-      where: { id },
+      where: { id: Number(id) },
     });
   }
 
@@ -74,7 +74,7 @@ export class NguoiDungService {
 
     // Cập nhật ảnh đại diện của người dùng
     return this.prisma.nguoiDung.update({
-      where: { id },
+      where: { id: Number(id) },
       data: {
         avatar: avatarPath, // Cập nhật trường avatar trong cơ sở dữ liệu
       },

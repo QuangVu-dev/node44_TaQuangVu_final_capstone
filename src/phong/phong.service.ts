@@ -35,7 +35,7 @@ export class PhongService {
   // Cập nhật phòng theo ID
   async update(id: number, updatePhongDto: CreatePhongDto) {
     return this.prisma.phong.update({
-      where: { id },
+      where: { id: Number(id) },
       data: updatePhongDto,
     });
   }
@@ -43,7 +43,7 @@ export class PhongService {
   // Lấy thông tin phòng theo ID
   async findOne(id: number) {
     return this.prisma.phong.findUnique({
-      where: { id },
+      where: { id: Number(id) },
     });
   }
 
@@ -66,7 +66,7 @@ export class PhongService {
   // Xóa phòng
   async deletePhong(id: number) {
     return this.prisma.phong.delete({
-      where: { id: id },
+      where: { id: Number(id) },
     });
   }
 }

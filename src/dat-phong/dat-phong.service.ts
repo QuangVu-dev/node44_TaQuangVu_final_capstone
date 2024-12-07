@@ -31,14 +31,14 @@ export class DatPhongService {
   // Lấy đặt phòng theo ID
   async getDatPhongById(id: number) {
     return this.prisma.datPhong.findUnique({
-      where: { id },
+      where: { id: Number(id) },
     });
   }
 
   // Cập nhật đặt phòng
   async updateDatPhong(id: number, datPhongDto: DatPhongDto) {
     return this.prisma.datPhong.update({
-      where: { id },
+      where: { id: Number(id) },
       data: datPhongDto,
     });
   }
@@ -46,7 +46,7 @@ export class DatPhongService {
   // Xóa đặt phòng
   async deleteDatPhong(id: number) {
     return this.prisma.datPhong.delete({
-      where: { id },
+      where: { id: Number(id) },
     });
   }
 

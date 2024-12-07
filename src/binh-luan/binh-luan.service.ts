@@ -37,14 +37,14 @@ export class BinhLuanService {
   // Lấy bình luận theo ID
   async getBinhLuanById(id: number) {
     return this.prisma.binhLuan.findUnique({
-      where: { id },
+      where: { id: Number(id) },
     });
   }
 
   // Cập nhật bình luận
   async updateBinhLuan(id: number, binhLuanDto: BinhLuanDto) {
     return this.prisma.binhLuan.update({
-      where: { id },
+      where: { id: Number(id) },
       data: binhLuanDto,
     });
   }
@@ -52,7 +52,7 @@ export class BinhLuanService {
   // Xóa bình luận
   async deleteBinhLuan(id: number) {
     return this.prisma.binhLuan.delete({
-      where: { id },
+      where: { id: Number(id) },
     });
   }
 }

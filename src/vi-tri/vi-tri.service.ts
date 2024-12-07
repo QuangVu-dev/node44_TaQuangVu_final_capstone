@@ -41,7 +41,7 @@ export class ViTriService {
   // Cập nhật một vị trí theo ID
   async updateViTri(id: number, updateViTriDto: ViTriDto): Promise<ViTri> {
     return this.prisma.viTri.update({
-      where: { id },
+      where: { id: Number(id) },
       data: {
         ...updateViTriDto,
         quoc_gia: updateViTriDto.quoc_gia, // Sử dụng toán tử spread để truyền dữ liệu
@@ -51,9 +51,15 @@ export class ViTriService {
 
   // Xóa một vị trí theo ID
   async deleteViTri(id: number): Promise<ViTri> {
-    return this.prisma.viTri.delete({
-      where: { id },
-    });
+    try {
+      return await this.prisma.viTri.delete({
+        where: { id: Number(id) },
+      });
+    } catch (error) {
+      throw new Error(
+        `Unable to delete record with id ${id}: ${error.message}`,
+      );
+    }
   }
 
   // Upload hình ảnh cho vị trí
@@ -72,7 +78,7 @@ export class ViTriService {
 
     // Cập nhật đường dẫn hình ảnh vào cơ sở dữ liệu
     const updatedViTri = await this.prisma.viTri.update({
-      where: { id },
+      where: { id: Number(id) },
       data: { hinh_anh: filePath },
     });
 
